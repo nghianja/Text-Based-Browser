@@ -3,6 +3,8 @@ import os
 import requests
 import sys
 from bs4 import BeautifulSoup
+from colorama import init, Fore
+init(autoreset=True)
 
 nytimes_com = '''
 This New Liquid Is Magnetic, and Mesmerizing
@@ -69,7 +71,10 @@ def parse_page(text):
     tags = ['title', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'ul', 'ol', 'li']
     soup = BeautifulSoup(text, 'html.parser')
     for tag in soup.find_all(tags):
-        text_list.append(tag.get_text())
+        text = tag.get_text()
+        if tag.name == 'a':
+            text = Fore.BLUE + text
+        text_list.append(text)
     return '\n'.join(text_list)
 
 

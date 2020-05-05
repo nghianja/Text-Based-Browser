@@ -138,9 +138,6 @@ files:
     \ = url\n        open_page(path, current_page)\n    else:\n        text = get_page(url)\n\
     \        print(text)\n        current_page = save_page(path, url, text)\n"
   learner_created: true
-- name: tb_tabs/3.python-requests.txt
-  visible: true
-  learner_created: true
 feedback_link: https://hyperskill.org/projects/79/stages/440/implement
 status: Solved
 record: 5

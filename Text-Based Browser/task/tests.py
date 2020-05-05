@@ -5,6 +5,8 @@ from hstest.check_result import CheckResult
 import os
 import shutil
 
+from colorama import Fore
+
 import sys
 if sys.platform.startswith("win"):
     import _locale
@@ -22,13 +24,13 @@ class TextBasedBrowserTest(StageTest):
         dir_for_files = os.path.join(os.curdir, 'tb_tabs')
         return [
             TestCase(
-                stdin='3.python-requests.org\nexit',
+                stdin='2.python-requests.org\nexit',
                 attach='requests',
                 args=[dir_for_files]
             ),
             TestCase(
-                stdin='nytimes.com\nnytimes\nexit',
-                attach='The New York Times',
+                stdin='en.wikipedia.org\nwiki\nexit',
+                attach='Wikipedia',
                 args=[dir_for_files]
             ),
             TestCase(
@@ -86,6 +88,9 @@ class TextBasedBrowserTest(StageTest):
                 return CheckResult.wrong('There are no correct saved tabs')
 
             shutil.rmtree(path_for_tabs)
+
+            if not Fore.BLUE in reply:
+                return CheckResult.wrong('There are no blue refs in output')
 
             if '</p>' not in reply and '</div>' not in reply:
                 if right_word in reply:
