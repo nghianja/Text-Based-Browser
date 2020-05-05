@@ -1,5 +1,6 @@
 import collections
 import os
+import requests
 import sys
 
 nytimes_com = '''
@@ -55,6 +56,13 @@ def save_page(path, url, text):
     return url[0:index]
 
 
+def get_page(url):
+    if url.find('https://') < 0:
+        url = 'https://' + url
+    r = requests.get(url)
+    return r.text
+
+
 # write your code here
 path = '.'
 if len(sys.argv) > 1:
@@ -83,12 +91,6 @@ while True:
         current_page = url
         open_page(path, current_page)
     else:
-        if url == "bloomberg.com":
-            text = bloomberg_com
-        elif url == "nytimes.com":
-            text = nytimes_com
-        else:
-            print("Error: Incorrect URL")
-            continue
+        text = get_page(url)
         print(text)
         current_page = save_page(path, url, text)
