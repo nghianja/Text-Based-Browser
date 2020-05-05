@@ -1,3 +1,4 @@
+import collections
 import os
 import sys
 
@@ -51,6 +52,7 @@ def save_page(path, url, text):
     filename = path + '/' + url[0:index] + '.txt'
     with open(filename, 'w') as outfile:
         outfile.write(text)
+    return url[0:index]
 
 
 # write your code here
@@ -62,12 +64,24 @@ if len(sys.argv) > 1:
         os.mkdir(directory)
     path = directory
 
+history = collections.deque()
+previous_page = ''
+current_page = ''
+
 while True:
+    if current_page != previous_page:
+        history.append(previous_page)
+        previous_page = current_page
     url = input()
     if url == "exit":
         break
+    elif url == "back":
+        if history:
+            current_page = history.pop()
+            open_page(path, current_page)
     elif url.rfind('.') < 0:
-        open_page(path, url)
+        current_page = url
+        open_page(path, current_page)
     else:
         if url == "bloomberg.com":
             text = bloomberg_com
@@ -77,4 +91,4 @@ while True:
             print("Error: Incorrect URL")
             continue
         print(text)
-        save_page(path, url, text)
+        current_page = save_page(path, url, text)
