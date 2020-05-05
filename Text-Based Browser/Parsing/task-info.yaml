@@ -102,6 +102,45 @@ files:
 
     TextBasedBrowserTest('browser.browser').run_tests()
   learner_created: false
+- name: browser/browser.py
+  visible: true
+  text: "import collections\nimport os\nimport requests\nimport sys\n\nnytimes_com\
+    \ = '''\nThis New Liquid Is Magnetic, and Mesmerizing\n\nScientists have created\
+    \ “soft” magnets that can flow \nand change shape, and that could be a boon to\
+    \ medicine \nand robotics. (Source: New York Times)\n\n\nMost Wikipedia Profiles\
+    \ Are of Men. This Scientist Is Changing That.\n\nJessica Wade has added nearly\
+    \ 700 Wikipedia biographies for\n important female and minority scientists in\
+    \ less than two \n years.\n\n'''\n\nbloomberg_com = '''\nThe Space Race: From\
+    \ Apollo 11 to Elon Musk\n\nIt's 50 years since the world was gripped by historic\
+    \ images\n of Apollo 11, and Neil Armstrong -- the first man to walk \n on the\
+    \ moon. It was the height of the Cold War, and the charts\n were filled with David\
+    \ Bowie's Space Oddity, and Creedence's \n Bad Moon Rising. The world is a very\
+    \ different place than \n it was 5 decades ago. But how has the space race changed\
+    \ since\n the summer of '69? (Source: Bloomberg)\n\n\nTwitter CEO Jack Dorsey\
+    \ Gives Talk at Apple Headquarters\n\nTwitter and Square Chief Executive Officer\
+    \ Jack Dorsey \n addressed Apple Inc. employees at the iPhone maker’s headquarters\n\
+    \ Tuesday, a signal of the strong ties between the Silicon Valley giants.\n'''\n\
+    \n\ndef open_page(path, url):\n    filename = path + '/' + url + '.txt'\n    if\
+    \ not os.path.exists(filename):\n        print(\"Error: Incorrect URL\")\n   \
+    \ else:\n        with open(filename) as infile:\n            print(infile.read())\n\
+    \n\ndef save_page(path, url, text):\n    index = url.rfind('.')\n    filename\
+    \ = path + '/' + url[0:index] + '.txt'\n    with open(filename, 'w') as outfile:\n\
+    \        outfile.write(text)\n    return url[0:index]\n\n\ndef get_page(url):\n\
+    \    if url.find('https://') < 0:\n        url = 'https://' + url\n    r = requests.get(url)\n\
+    \    return r.text\n\n\n# write your code here\npath = '.'\nif len(sys.argv) >\
+    \ 1:\n    # create directory\n    directory = sys.argv[1]\n    if not os.path.exists(directory):\n\
+    \        os.mkdir(directory)\n    path = directory\n\nhistory = collections.deque()\n\
+    previous_page = ''\ncurrent_page = ''\n\nwhile True:\n    if current_page != previous_page:\n\
+    \        history.append(previous_page)\n        previous_page = current_page\n\
+    \    url = input()\n    if url == \"exit\":\n        break\n    elif url == \"\
+    back\":\n        if history:\n            current_page = history.pop()\n     \
+    \       open_page(path, current_page)\n    elif url.rfind('.') < 0:\n        current_page\
+    \ = url\n        open_page(path, current_page)\n    else:\n        text = get_page(url)\n\
+    \        print(text)\n        current_page = save_page(path, url, text)\n"
+  learner_created: true
+- name: tb_tabs/3.python-requests.txt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/79/stages/440/implement
-status: Unchecked
-record: -1
+status: Solved
+record: 5

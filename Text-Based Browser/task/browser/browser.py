@@ -2,6 +2,7 @@ import collections
 import os
 import requests
 import sys
+from bs4 import BeautifulSoup
 
 nytimes_com = '''
 This New Liquid Is Magnetic, and Mesmerizing
@@ -63,6 +64,15 @@ def get_page(url):
     return r.text
 
 
+def parse_page(text):
+    text_list = []
+    tags = ['title', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'ul', 'ol', 'li']
+    soup = BeautifulSoup(text, 'html.parser')
+    for tag in soup.find_all(tags):
+        text_list.append(tag.get_text())
+    return '\n'.join(text_list)
+
+
 # write your code here
 path = '.'
 if len(sys.argv) > 1:
@@ -91,6 +101,6 @@ while True:
         current_page = url
         open_page(path, current_page)
     else:
-        text = get_page(url)
+        text = parse_page(get_page(url))
         print(text)
         current_page = save_page(path, url, text)
